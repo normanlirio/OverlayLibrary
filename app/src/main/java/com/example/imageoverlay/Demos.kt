@@ -10,7 +10,7 @@ import android.widget.SimpleAdapter
 import java.text.Collator
 import java.util.*
 
-class Demos : ListActivity() {
+open class Demos : ListActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,7 +59,7 @@ class Demos : ListActivity() {
         for (i in 0 until len) {
             val info = list.get(i)
             val labelSeq = info.loadLabel(pm)
-            val label = if (labelSeq != null) labelSeq!!.toString() else info.activityInfo.name
+            val label = if (labelSeq != null) labelSeq.toString() else info.activityInfo.name
 
             if (prefixWithSlash.length == 0 || label.startsWith(prefixWithSlash)) {
 
@@ -95,20 +95,20 @@ class Demos : ListActivity() {
         }
     }
 
-    protected fun activityIntent(pkg: String, componentName: String): Intent {
+    private fun activityIntent(pkg: String, componentName: String): Intent {
         val result = Intent()
         result.setClassName(pkg, componentName)
         return result
     }
 
-    protected fun browseIntent(path: String): Intent {
+    private fun browseIntent(path: String): Intent {
         val result = Intent()
         result.setClass(this, Demos::class.java)
         result.putExtra("com.example.android.apis.Path", path)
         return result
     }
 
-    protected fun addItem(data: MutableList<Map<String, Any>>, name: String, intent: Intent) {
+    private fun addItem(data: MutableList<Map<String, Any>>, name: String, intent: Intent) {
         val temp = HashMap<String, Any>()
         temp["title"] = name
         temp["intent"] = intent
@@ -116,7 +116,7 @@ class Demos : ListActivity() {
     }
 
     protected override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
-        val map = l.getItemAtPosition(position) as Map<String, Any>
+        val map = l.getItemAtPosition(position) as Map<*, *>
 
         val intent = map["intent"] as Intent
         startActivity(intent)
